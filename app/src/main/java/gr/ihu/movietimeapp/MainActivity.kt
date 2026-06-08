@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
         var movies by mutableStateOf<List<Movie>>(emptyList())
 
 
-        RetrofitClient.api.getMovies(null, null, null, null)
+        RetrofitClient.api.getMovies(null, null, null, null,  null)
             .enqueue(object : Callback<List<Movie>> {
 
                 override fun onResponse(
@@ -84,6 +84,9 @@ class MainActivity : ComponentActivity() {
 
             MovieTimeAppTheme {
                 var titleFilter by remember { mutableStateOf("") }
+                var directorFilter by remember { mutableStateOf("") }
+                var dateFromFilter by remember { mutableStateOf("") }
+                var dateToFilter by remember { mutableStateOf("") }
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -102,8 +105,33 @@ class MainActivity : ComponentActivity() {
                             label = { Text("Search movie") },
                             modifier = Modifier.fillMaxWidth()
                         )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            OutlinedTextField(
+                                value = directorFilter,
+                                onValueChange = { directorFilter = it },
+                                label = { Text("Director") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
 
                             Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedTextField(
+                                value = dateFromFilter,
+                                onValueChange = { dateFromFilter = it },
+                                label = { Text("Date From (YYYY-MM-DD)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            OutlinedTextField(
+                                value = dateToFilter,
+                                onValueChange = { dateToFilter = it },
+                                label = { Text("Date To (YYYY-MM-DD)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+
 
                             Button(
                                 onClick = {
@@ -111,8 +139,11 @@ class MainActivity : ComponentActivity() {
                                     RetrofitClient.api.getMovies(
                                         titleFilter.ifBlank { null },
                                         null,
-                                        null,
-                                        null
+                                        dateFromFilter.ifBlank { null },
+                                        dateToFilter.ifBlank { null },
+                                        directorFilter.ifBlank { null }
+
+
                                     ).enqueue(object : Callback<List<Movie>> {
 
                                         override fun onResponse(
@@ -136,6 +167,7 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text("Search")
                             }
+
 
                             Spacer(modifier = Modifier.height(8.dp))
 

@@ -13,7 +13,8 @@ interface MovieApi {
         @Query("title") title: String?,
         @Query("country") country: String?,
         @Query("date_from") dateFrom: String?,
-        @Query("date_to") dateTo: String?
+        @Query("date_to") dateTo: String?,
+        @Query("director") director: String?
 
     ): Call<List<Movie>>
     @GET("api/movies/{id}/")
