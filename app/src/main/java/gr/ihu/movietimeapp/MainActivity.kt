@@ -97,6 +97,7 @@ class MainActivity : ComponentActivity() {
                     composable("list") {
 
                         Column(
+
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp)
@@ -223,6 +224,7 @@ class MainActivity : ComponentActivity() {
                                 items(movies) { movie ->
 
                                     Card(
+
                                         colors = CardDefaults.cardColors(
                                             containerColor = Color(0xFF1E1E1E)
                                         ),
