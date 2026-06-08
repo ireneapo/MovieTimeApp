@@ -11,5 +11,7 @@ data class Movie(
     val imdb_rating: Double,
     val description: String,
     val release_country: String,
-    val trailer_url:String?
+    val trailer_url:String?,
+    val director_name: String?,
+    val genre_name: String?
 )

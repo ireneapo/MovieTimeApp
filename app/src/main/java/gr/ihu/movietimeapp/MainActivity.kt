@@ -87,6 +87,7 @@ class MainActivity : ComponentActivity() {
                 var directorFilter by remember { mutableStateOf("") }
                 var dateFromFilter by remember { mutableStateOf("") }
                 var dateToFilter by remember { mutableStateOf("") }
+                var countryFilter by remember { mutableStateOf("") }
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -130,6 +131,14 @@ class MainActivity : ComponentActivity() {
                                 label = { Text("Date To (YYYY-MM-DD)") },
                                 modifier = Modifier.fillMaxWidth()
                             )
+                            OutlinedTextField(
+                                value = countryFilter,
+                                onValueChange = { countryFilter = it },
+                                label = { Text("Country") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
 
 
 
@@ -138,7 +147,7 @@ class MainActivity : ComponentActivity() {
 
                                     RetrofitClient.api.getMovies(
                                         titleFilter.ifBlank { null },
-                                        null,
+                                        countryFilter.ifBlank { null },
                                         dateFromFilter.ifBlank { null },
                                         dateToFilter.ifBlank { null },
                                         directorFilter.ifBlank { null }
@@ -170,6 +179,44 @@ class MainActivity : ComponentActivity() {
 
 
                             Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = {
+
+                                    titleFilter = ""
+                                    countryFilter= ""
+                                    directorFilter = ""
+                                    dateFromFilter = ""
+                                    dateToFilter = ""
+
+                                    RetrofitClient.api.getMovies(
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+                                    ).enqueue(object : Callback<List<Movie>> {
+
+                                        override fun onResponse(
+                                            call: Call<List<Movie>>,
+                                            response: Response<List<Movie>>
+                                        ) {
+                                            if (response.isSuccessful) {
+                                                movies = response.body() ?: emptyList()
+                                            }
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<List<Movie>>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("MOVIE_API", t.message.toString())
+                                        }
+                                    })
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Reset Filters")
+                            }
 
                             LazyColumn {
 

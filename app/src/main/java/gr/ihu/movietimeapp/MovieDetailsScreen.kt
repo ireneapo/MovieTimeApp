@@ -77,6 +77,10 @@ fun MovieDetailsScreen(movieId: Int) {
             Text("Country: ${movie.release_country}")
 
             Text("Release date: ${movie.release_date}")
+            Text("Duration: ${movie.duration} min")
+            Text("Director: ${movie.director_name}")
+
+            Text("Genre: ${movie.genre_name}")
 
             Spacer(modifier = Modifier.height(12.dp))
 
